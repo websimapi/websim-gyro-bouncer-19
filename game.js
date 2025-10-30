@@ -5,10 +5,7 @@ import { Replay } from './replay.js';
 import { Camera } from './camera.js';
 import * as UI from './ui.js';
 import * as Loader from './loader.js';
-
-// Game constants
-const restitution = 3.0;
-const SAFE_ZONE_SCORE = 50;
+import { GAME_RESTITUTION, SAFE_ZONE_SCORE } from './constants.js';
 
 // Game state variables
 let engine, world;
@@ -95,10 +92,10 @@ export async function init() {
     inSafeZone = true;
     const groundHeight = 60;
     ground = Matter.Bodies.rectangle(UI.canvas.width / 2, UI.canvas.height - groundHeight / 2, UI.canvas.width, groundHeight, { isStatic: true, label: 'ground', friction: 0.5 });
-    Matter.World.add(world, ground);
+    Matter.World.add(world);
 
-    player = new Player(UI.canvas.width / 2, UI.canvas.height - 100, userAvatarImg, world, { restitution });
-    platformManager = new PlatformManager(UI.canvas.width, UI.canvas.height, platformImg, world, { restitution });
+    player = new Player(UI.canvas.width / 2, UI.canvas.height - 100, userAvatarImg, world, { restitution: GAME_RESTITUTION });
+    platformManager = new PlatformManager(UI.canvas.width, UI.canvas.height, platformImg, world, { restitution: GAME_RESTITUTION });
     platformManager.generateInitialPlatforms();
     replay = new Replay();
     camera = new Camera(UI.canvas.height);
@@ -224,4 +221,3 @@ export function createAudioContext() {
         audioCtx = new (window.AudioContext || window.webkitAudioContext)();
     }
 }
-
